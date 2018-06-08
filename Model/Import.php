@@ -10,6 +10,9 @@ namespace Mygento\ImportExport\Model;
 
 class Import implements \Mygento\ImportExport\Api\ImportInterface
 {
+    /** @var \Mygento\ImportExport\Model\Category\Import $categoryAdapter */
+    private $categoryAdapter;
+
     /** @var \Mygento\ImportExport\Model\Product\Attribute */
     private $attributeAdapter;
 
@@ -38,15 +41,18 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
 
     /**
      *
+     * @param \Mygento\ImportExport\Model\Category\Import $categoryAdapter
      * @param \Mygento\ImportExport\Model\Product\Attribute $attributeAdapter
      * @param \Magento\ImportExport\Model\ImportFactory $importModelFactory
      * @param \Mygento\ImportExport\Model\Adapter\ArrayAdapterFactory $adapterFactory
      */
     public function __construct(
+        \Mygento\ImportExport\Model\Category\Import $categoryAdapter,
         \Mygento\ImportExport\Model\Product\Attribute $attributeAdapter,
         \Magento\ImportExport\Model\ImportFactory $importModelFactory,
         \Mygento\ImportExport\Model\Adapter\ArrayAdapterFactory $adapterFactory
     ) {
+        $this->categoryAdapter = $categoryAdapter;
         $this->attributeAdapter = $attributeAdapter;
         $this->importModelFactory = $importModelFactory;
         $this->adapterFactory = $adapterFactory;
@@ -141,5 +147,18 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     private function addToLogTrace($importModel)
     {
         $this->logTrace = $importModel->getFormatedLogTrace();
+    }
+
+    /**
+     *
+     * @param array $data
+     */
+    public function importCategoryData(array $data): array
+    {
+        $result = [];
+        foreach ($data as $cat) {
+            $result[] = $this->categoryAdapter->createCategory($cat);
+        }
+        return $result;
     }
 }

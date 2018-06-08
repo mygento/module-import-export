@@ -96,7 +96,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
                     continue;
                 }
 
-                $result[] = $option->getValue();
+                $result[] = $option->getLabel();
             }
             $this->options[$code] = $result;
         }

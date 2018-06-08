@@ -22,4 +22,10 @@ interface ImportInterface
      * @param string[] $list
      */
     public function setProductOptionAttributes(array $list);
+
+    /**
+     *
+     * @param array $data
+     */
+    public function importCategoryData(array $data): array;
 }
