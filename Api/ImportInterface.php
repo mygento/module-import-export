@@ -28,4 +28,9 @@ interface ImportInterface
      * @param array $data
      */
     public function importCategoryData(array $data): array;
+
+    /**
+     * Get all products SKU
+     */
+    public function getImportedProductsSku(): array;
 }

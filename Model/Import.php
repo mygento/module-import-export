@@ -16,6 +16,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     /** @var \Mygento\ImportExport\Model\Product\Attribute */
     private $attributeAdapter;
 
+    /** @var \Mygento\ImportExport\Model\Product\Product */
+    private $productAdapter;
+
     /** @var \Magento\ImportExport\Model\ImportFactory */
     private $importModelFactory;
 
@@ -31,6 +34,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         'entity' => 'catalog_product',
         'validation_strategy' => 'validation-stop-on-errors',
         '_import_multiple_value_separator' => ',',
+        \Magento\ImportExport\Model\Import::FIELD_NAME_IMG_FILE_DIR => 'var/import',
     ];
 
     /** @var array */
@@ -43,17 +47,20 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
      *
      * @param \Mygento\ImportExport\Model\Category\Import $categoryAdapter
      * @param \Mygento\ImportExport\Model\Product\Attribute $attributeAdapter
+     * @param \Mygento\ImportExport\Model\Product\Product $productAdapter
      * @param \Magento\ImportExport\Model\ImportFactory $importModelFactory
      * @param \Mygento\ImportExport\Model\Adapter\ArrayAdapterFactory $adapterFactory
      */
     public function __construct(
         \Mygento\ImportExport\Model\Category\Import $categoryAdapter,
         \Mygento\ImportExport\Model\Product\Attribute $attributeAdapter,
+        \Mygento\ImportExport\Model\Product\Product $productAdapter,
         \Magento\ImportExport\Model\ImportFactory $importModelFactory,
         \Mygento\ImportExport\Model\Adapter\ArrayAdapterFactory $adapterFactory
     ) {
         $this->categoryAdapter = $categoryAdapter;
         $this->attributeAdapter = $attributeAdapter;
+        $this->productAdapter = $productAdapter;
         $this->importModelFactory = $importModelFactory;
         $this->adapterFactory = $adapterFactory;
     }
@@ -160,5 +167,10 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
             $result[] = $this->categoryAdapter->createCategory($cat);
         }
         return $result;
+    }
+
+    public function getImportedProductsSku(): array
+    {
+        return $this->productAdapter->getProductsSku();
     }
 }
