@@ -45,4 +45,10 @@ interface ImportInterface
      * @param array $data
      */
     public function disableCategoryData(array $data);
+
+    /**
+     *
+     * @param array $data
+     */
+    public function disableProductData(array $data);
 }

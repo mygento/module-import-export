@@ -8,11 +8,21 @@
 
 namespace Mygento\ImportExport\Model\Product;
 
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
+
 class Product
 {
+    /** @var \Magento\Framework\App\ResourceConnection */
+    private $resource;
+
+    /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
+    private $productRepo;
+
     public function __construct(
+        \Magento\Catalog\Api\ProductRepositoryInterface $productRepo,
         \Magento\Framework\App\ResourceConnection $resource
     ) {
+        $this->productRepo = $productRepo;
         $this->resource = $resource;
     }
 
@@ -33,5 +43,16 @@ class Product
             ['sku']
         );
         return $connection->fetchCol($select);
+    }
+
+    public function disableProduct(string $sku)
+    {
+        try {
+            $product = $this->productRepo->get($sku);
+            $product->setStatus(Status::STATUS_DISABLED);
+            $this->productRepo->save($product);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            return;
+        }
     }
 }

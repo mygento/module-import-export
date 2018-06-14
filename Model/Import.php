@@ -85,6 +85,17 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
+     *
+     * @param array $data
+     */
+    public function disableProductData(array $data)
+    {
+        foreach ($data as $product) {
+            $this->productAdapter->disableProduct($product);
+        }
+    }
+
+    /**
      * Set Option based attribute list
      * @param string[] $list
      */
