@@ -11,4 +11,6 @@ namespace Mygento\ImportExport\Api;
 interface CategoryInterface
 {
     public function createCategory(string $path);
+
+    public function deleteCategory(string $path);
 }

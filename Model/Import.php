@@ -169,6 +169,17 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $result;
     }
 
+    /**
+     *
+     * @param array $data
+     */
+    public function deleteCategoryData(array $data)
+    {
+        foreach ($data as $cat) {
+            $this->categoryAdapter->deleteCategory($cat);
+        }
+    }
+
     public function getImportedProductsSku(): array
     {
         return $this->productAdapter->getProductsSku();

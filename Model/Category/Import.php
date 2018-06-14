@@ -10,26 +10,35 @@ namespace Mygento\ImportExport\Model\Category;
 
 class Import implements \Mygento\ImportExport\Api\CategoryInterface
 {
-    /** \Magento\CatalogImportExport\Model\Import\Product\CategoryProcessor */
+    /** \Mygento\ImportExport\Model\Category\Processor */
     private $categoryProcessor;
 
     public function __construct(
-        \Magento\CatalogImportExport\Model\Import\Product\CategoryProcessor $categoryProcessor
+        \Mygento\ImportExport\Model\Category\Processor $categoryProcessor
     ) {
         $this->categoryProcessor = $categoryProcessor;
     }
 
     /**
      *
-     * @param string $name
+     * @param string $path
      * @return integer|null;
      */
-    public function createCategory(string $name)
+    public function createCategory(string $path)
     {
-        $result = $this->categoryProcessor->upsertCategories($name, '|');
+        $result = $this->categoryProcessor->upsertCategories($path, '|');
         if (is_array($result) && isset($result[0])) {
             return $result[0];
         }
         return null;
+    }
+
+    /**
+     *
+     * @param string $path
+     */
+    public function deleteCategory(string $path)
+    {
+        $this->categoryProcessor->deleteCategoryByPath($path);
     }
 }
