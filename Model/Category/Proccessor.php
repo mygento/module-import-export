@@ -37,4 +37,22 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
         $categoryId = $this->categories[$index];
         $this->categoryRepo->deleteByIdentifier($categoryId);
     }
+
+    /**
+     *
+     * @param string $categoryPath
+     */
+    public function disableCategoryByPath(string $categoryPath)
+    {
+        /** @var string $index */
+        $index = $this->standardizeString($categoryPath);
+        if (!isset($this->categories[$index])) {
+            return;
+        }
+
+        $categoryId = $this->categories[$index];
+        $category = $this->categoryRepo->get($categoryId);
+        $category->setIsActive(false);
+        $this->categoryRepo->save($category);
+    }
 }

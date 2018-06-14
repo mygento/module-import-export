@@ -13,4 +13,6 @@ interface CategoryInterface
     public function createCategory(string $path);
 
     public function deleteCategory(string $path);
+
+    public function disableCategory(string $path);
 }

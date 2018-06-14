@@ -41,4 +41,9 @@ class Import implements \Mygento\ImportExport\Api\CategoryInterface
     {
         $this->categoryProcessor->deleteCategoryByPath($path);
     }
+
+    public function disableCategory(string $path)
+    {
+        $this->categoryProcessor->disableCategoryByPath($path);
+    }
 }

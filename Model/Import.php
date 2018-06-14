@@ -180,6 +180,17 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         }
     }
 
+    /**
+     *
+     * @param array $data
+     */
+    public function disableCategoryData(array $data)
+    {
+        foreach ($data as $cat) {
+            $this->categoryAdapter->disableCategory($cat);
+        }
+    }
+
     public function getImportedProductsSku(): array
     {
         return $this->productAdapter->getProductsSku();

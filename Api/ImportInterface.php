@@ -33,4 +33,16 @@ interface ImportInterface
      * Get all products SKU
      */
     public function getImportedProductsSku(): array;
+
+    /**
+     *
+     * @param array $data
+     */
+    public function deleteCategoryData(array $data);
+
+    /**
+     *
+     * @param array $data
+     */
+    public function disableCategoryData(array $data);
 }
