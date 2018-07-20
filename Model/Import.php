@@ -22,7 +22,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     /** @var \Magento\ImportExport\Model\ImportFactory */
     private $importModelFactory;
 
-    /** @var \Mygento\Cml\Model\Adapter\ArrayAdapterFactory */
+    /** @var \Mygento\ImportExport\Model\Adapter\ArrayAdapterFactory */
     private $adapterFactory;
 
     /** @var array */
@@ -35,6 +35,22 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         'validation_strategy' => 'validation-stop-on-errors',
         '_import_multiple_value_separator' => ',',
         \Magento\ImportExport\Model\Import::FIELD_NAME_IMG_FILE_DIR => 'var/import',
+    ];
+
+    /** @var array */
+    private $defaultCustomerSettings = [
+        'behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_ADD_UPDATE,
+        'entity' => 'customer',
+        'validation_strategy' => 'validation-stop-on-errors',
+        '_import_multiple_value_separator' => ',',
+    ];
+
+    /** @var array */
+    private $defaultCustomerAddressSettings = [
+        'behavior' => \Magento\ImportExport\Model\Import::BEHAVIOR_ADD_UPDATE,
+        'entity' => 'customer_address',
+        'validation_strategy' => 'validation-stop-on-errors',
+        '_import_multiple_value_separator' => ',',
     ];
 
     /** @var array */
@@ -76,6 +92,44 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $this->importSettings = $this->defaultProductSettings;
         if (!empty($settings)) {
             $this->importSettings = array_merge($this->defaultProductSettings, $settings);
+        }
+
+        $source = $this->adapterFactory->create(['data' => $data]);
+        $this->createAttrOptions($source);
+        if ($this->validateData($data)) {
+            $this->importData();
+        }
+        return $this->logTrace;
+    }
+
+    /**
+     * @param array $data
+     * @param array $settings
+     * @return string
+     */
+    public function importCustomersData(array $data, $settings = []): string
+    {
+        $this->importSettings = $this->defaultCustomerSettings;
+        if (!empty($settings)) {
+            $this->importSettings = array_merge($this->defaultCustomerSettings, $settings);
+        }
+
+        if ($this->validateData($data)) {
+            $this->importData();
+        }
+        return $this->logTrace;
+    }
+
+    /**
+     * @param array $data
+     * @param array $settings
+     * @return string
+     */
+    public function importAddressesData(array $data, $settings = []): string
+    {
+        $this->importSettings = $this->defaultCustomerAddressSettings;
+        if (!empty($settings)) {
+            $this->importSettings = array_merge($this->defaultCustomerSettings, $settings);
         }
 
         if ($this->validateData($data)) {
@@ -127,7 +181,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
 
         $importModel = $this->createImportModel();
         $source = $this->adapterFactory->create(['data' => $data]);
-        $this->createAttrOptions($source);
         $validationResult = $importModel->validateSource($source);
         $this->addToLogTrace($importModel);
         return $validationResult;
@@ -156,6 +209,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     {
         $importModel = $this->createImportModel();
         $importModel->importSource();
+        $this->addToLogTrace($importModel);
         $this->handleImportResult($importModel);
     }
 
