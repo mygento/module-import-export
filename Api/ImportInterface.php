@@ -44,6 +44,12 @@ interface ImportInterface
      *
      * @param array $data
      */
+    public function renameCategoryData(array $data);
+
+    /**
+     *
+     * @param array $data
+     */
     public function disableCategoryData(array $data);
 
     /**

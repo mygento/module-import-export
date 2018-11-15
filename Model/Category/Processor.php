@@ -55,4 +55,19 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
         $category->setIsActive(false);
         $this->categoryRepo->save($category);
     }
+
+    /**
+     *
+     * @param int $categoryId
+     * @param string $name
+     */
+    public function renameCategory(int $categoryId, string $name)
+    {
+        $category = $this->categoryRepo->get($categoryId);
+        if ($category->getName() == $name) {
+            return;
+        }
+        $category->setName($name);
+        $this->categoryRepo->save($category);
+    }
 }

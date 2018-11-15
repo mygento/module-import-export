@@ -256,6 +256,21 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         }
     }
 
+    /**
+     * array of [id] => name
+     * @param array $data
+     */
+    public function renameCategoryData(array $data)
+    {
+        foreach ($data as $id => $name) {
+            $this->categoryAdapter->renameCategory($id, $name);
+        }
+    }
+
+    /**
+     *
+     * @return array
+     */
     public function getImportedProductsSku(): array
     {
         return $this->productAdapter->getProductsSku();
