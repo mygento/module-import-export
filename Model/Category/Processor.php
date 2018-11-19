@@ -70,4 +70,15 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
         $category->setName($name);
         $this->categoryRepo->save($category);
     }
+
+    /**
+     * Standardize a string.
+     *
+     * @param string $string
+     * @return string
+     */
+    private function standardizeString($string)
+    {
+        return mb_strtolower($string);
+    }
 }
