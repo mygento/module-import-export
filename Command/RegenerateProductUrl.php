@@ -20,8 +20,31 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
 {
     /**
-     *
-     *
+     * @var \Magento\Framework\App\State
+     */
+    private $state;
+
+    /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    private $collection;
+
+    /**
+     * @var \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy
+     */
+    private $productUrlGenerator;
+
+    /**
+     * @var \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy
+     */
+    private $urlPersist;
+
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface\Proxy
+     */
+    private $storeManager;
+
+    /**
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collection
      * @param \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy $productUrlGenerator
@@ -106,6 +129,7 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
                 try {
                     $this->urlPersist->replace($newUrls);
                 } catch (\Exception $e) {
+                    $output->writeln('');
                     $output->writeln(
                         sprintf(
                             $error,
