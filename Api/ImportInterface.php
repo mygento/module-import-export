@@ -57,4 +57,9 @@ interface ImportInterface
      * @param array $data
      */
     public function disableProductData(array $data);
+
+    /**
+     * Mass Disable Products
+     */
+    public function massDisableProducts();
 }

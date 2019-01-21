@@ -18,11 +18,16 @@ class Product
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $productRepo;
 
+    /** @var \Magento\Eav\Model\Config $eavConfig */
+    private $eavConfig;
+
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepo,
+        \Magento\Eav\Model\Config $eavConfig,
         \Magento\Framework\App\ResourceConnection $resource
     ) {
         $this->productRepo = $productRepo;
+        $this->eavConfig = $eavConfig;
         $this->resource = $resource;
     }
 
@@ -32,14 +37,9 @@ class Product
      */
     public function getProductsSku(): array
     {
-        $connection = $this->resource->getConnection(
-            \Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION
-        );
+        $connection = $this->resource->getConnection();
         $select = $this->resource->getConnection()->select()->from(
-            $this->resource->getTableName(
-                'catalog_product_entity',
-                \Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION
-            ),
+            $this->resource->getTableName('catalog_product_entity'),
             ['sku']
         );
         return $connection->fetchCol($select);
@@ -54,5 +54,26 @@ class Product
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
             return;
         }
+    }
+
+    public function massDisableProducts()
+    {
+        $attribute = $this->eavConfig->getAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'status'
+        );
+        if (!$attribute || !$attribute->getId()) {
+            return;
+        }
+        $connection = $this->resource->getConnection();
+
+        $bind = ['value' => Status::STATUS_DISABLED];
+        $where = 'attribute_id = ' . $attribute->getId();
+
+        $connection->update(
+            $attribute->getBackendTable(),
+            $bind,
+            $where
+        );
     }
 }

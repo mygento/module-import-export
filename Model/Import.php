@@ -280,4 +280,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     {
         return $this->productAdapter->getProductsSku();
     }
+
+    public function massDisableProducts()
+    {
+        return $this->productAdapter->massDisableProducts();
+    }
 }
