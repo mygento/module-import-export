@@ -263,12 +263,11 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     public function renameCategoryData(array $data)
     {
         foreach ($data as $id => $name) {
-            // phpcs:disable
             try {
                 $this->categoryAdapter->renameCategory($id, $name);
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                unset($e);
             }
-            // phpcs:enable
         }
     }
 

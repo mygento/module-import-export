@@ -72,10 +72,17 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         }
     }
 
+    /**
+     * TODO
+     * @param \Magento\ImportExport\Model\Import\AbstractSource $source
+     * @param array $attibutes
+     */
     public function createMultiselectAttributeOptions(
         \Magento\ImportExport\Model\Import\AbstractSource $source,
         array $attibutes
     ) {
+        unset($source);
+        unset($attibutes);
     }
 
     /**
@@ -84,9 +91,9 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
      * @param string $code
      * @throws \Magento\Framework\Exception\StateException
      * @throws \Magento\Framework\Exception\InputException
-     * @return \Magento\Eav\Api\Data\AttributeOptionInterface[]
+     * @return array
      */
-    private function getAttributeOptions(string $code)
+    public function getAttributeOptions(string $code)
     {
         if (!isset($this->options[$code])) {
             $options = $this->repository->getItems($code);
@@ -96,7 +103,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
                     continue;
                 }
 
-                $result[] = $option->getLabel();
+                $result[$option->getValue()] = $option->getLabel();
             }
             $this->options[$code] = $result;
         }
@@ -106,9 +113,9 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     /**
      *
      * @param string $attributeCode
-     * @param type $label
+     * @param string $label
      */
-    private function createAttributeOption(string $attributeCode, $label)
+    public function createAttributeOption(string $code, $label)
     {
         $optionLabel = $this->optionLabelFactory->create();
         $optionLabel->setStoreId(0);
@@ -120,7 +127,18 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         $option->setSortOrder(0);
         $option->setIsDefault(false);
 
-        $this->repository->add($attributeCode, $option);
-        $this->options[$attributeCode][] = $label;
+        $this->repository->add($code, $option);
+        $this->options[$code][] = $label;
+    }
+
+    /**
+     * Reload Cached Attribute Option List
+     * @param string $code
+     * @return array
+     */
+    public function reloadAttributeOptionList(string $code)
+    {
+        unset($this->options[$code]);
+        return $this->getAttributeOptions($code);
     }
 }
