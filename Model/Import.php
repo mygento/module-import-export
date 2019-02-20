@@ -59,6 +59,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     /** @var string */
     private $logTrace = '';
 
+    /** @var int */
+    private $maxRetry = 5;
+
     /**
      *
      * @param \Mygento\ImportExport\Model\Category\Import $categoryAdapter
@@ -97,7 +100,18 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $source = $this->adapterFactory->create(['data' => $data]);
         $this->createAttrOptions($source);
         if ($this->validateData($data)) {
-            $this->importData();
+            for ($i = 0; $i < $this->maxRetry; $i++) {
+                try {
+                    $this->importData();
+                    break;
+                } catch (\Magento\Framework\DB\Adapter\DeadlockException $e) {
+                    unset($e);
+                    continue;
+                } catch (\Magento\Framework\DB\Adapter\LockWaitException $e) {
+                    unset($e);
+                    continue;
+                }
+            }
         }
         return $this->logTrace;
     }
@@ -283,5 +297,16 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     public function massDisableProducts()
     {
         return $this->productAdapter->massDisableProducts();
+    }
+
+    /**
+     *
+     * @param int $max
+     * @return $this
+     */
+    public function setMaxRetry(int $max)
+    {
+        $this->maxRetry = $max;
+        return $this;
     }
 }

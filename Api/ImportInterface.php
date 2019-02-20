@@ -62,4 +62,11 @@ interface ImportInterface
      * Mass Disable Products
      */
     public function massDisableProducts();
+
+    /**
+     *
+     * @param int $max
+     * @return $this
+     */
+    public function setMaxRetry(int $max);
 }
