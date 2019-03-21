@@ -21,14 +21,30 @@ class Product
     /** @var \Magento\Eav\Model\Config $eavConfig */
     private $eavConfig;
 
+    /**
+     * @var \Magento\Catalog\Model\Indexer\Product\Flat\Processor
+     */
+    private $productFlatIndexerProcessor;
+
+    /**
+     * @var \Magento\Catalog\Model\Indexer\Product\Price\Processor
+     */
+    private $productPriceIndexerProcessor;
+
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepo,
+        \Magento\Catalog\Model\Indexer\Product\Flat\Processor $productFlatIndexerProcessor,
+        \Magento\Catalog\Model\Indexer\Product\Price\Processor $productPriceIndexerProcessor,
         \Magento\Eav\Model\Config $eavConfig,
-        \Magento\Framework\App\ResourceConnection $resource
+        \Magento\Framework\App\ResourceConnection $resource,
+        \Magento\Catalog\Model\Product\ActionFactory $actionFactory
     ) {
         $this->productRepo = $productRepo;
+        $this->productFlatIndexerProcessor = $productFlatIndexerProcessor;
+        $this->productPriceIndexerProcessor = $productPriceIndexerProcessor;
         $this->eavConfig = $eavConfig;
         $this->resource = $resource;
+        $this->actionFactory = $actionFactory;
     }
 
     /**
@@ -75,5 +91,27 @@ class Product
             $bind,
             $where
         );
+    }
+
+    /**
+     * Update attribute values for entity list per store
+     *
+     * @param array $productIds
+     * @param array $attrData ['attirbute_code' => 'value']
+     * @param int $storeId
+     */
+    public function updateProductAttributes(array $productIds, array $attrData, int $storeId)
+    {
+        $action = $this->actionFactory->create();
+        $action->updateAttributes($productIds, $attrData, $storeId);
+        $this->productFlatIndexerProcessor->reindexList($productIds);
+        if (isset($attrData['price']) ||
+          isset($attrData['special_price']) ||
+          isset($attrData['special_from_date']) ||
+          isset($attrData['special_to_date']) ||
+          isset($attrData['cost'])
+        ) {
+            $this->productPriceIndexerProcessor->reindexList($productIds);
+        }
     }
 }

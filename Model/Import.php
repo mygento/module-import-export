@@ -309,4 +309,16 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $this->maxRetry = $max;
         return $this;
     }
+
+    /**
+     * Update attribute values for entity list per store
+     *
+     * @param array $productIds
+     * @param array $attrData ['attirbute_code' => 'value']
+     * @param int $storeId
+     */
+    public function updateProductAttributes(array $productIds, array $attrData, int $storeId)
+    {
+        return $this->productAdapter->updateProductAttributes($productIds, $attrData, $storeId);
+    }
 }

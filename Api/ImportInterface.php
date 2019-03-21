@@ -69,4 +69,13 @@ interface ImportInterface
      * @return $this
      */
     public function setMaxRetry(int $max);
+
+    /**
+     * Update attribute values for entity list per store
+     *
+     * @param array $productIds
+     * @param array $attrData ['attirbute_code' => 'value']
+     * @param int $storeId
+     */
+    public function updateProductAttributes(array $productIds, array $attrData, int $storeId);
 }
