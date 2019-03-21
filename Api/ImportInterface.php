@@ -14,6 +14,7 @@ interface ImportInterface
     /**
      * Import product data
      * @param array $data
+     * @return string
      */
     public function importProductData(array $data): string;
 
@@ -26,13 +27,21 @@ interface ImportInterface
     /**
      *
      * @param array $data
+     * @return array
      */
     public function importCategoryData(array $data): array;
 
     /**
      * Get all products SKU
+     * @return array
      */
     public function getImportedProductsSku(): array;
+
+    /**
+     * Get all products entity_id sku pair
+     * @return array
+     */
+    public function getImportedProductsIdSku(): array;
 
     /**
      *

@@ -61,6 +61,20 @@ class Product
         return $connection->fetchCol($select);
     }
 
+    /**
+     * Get SKU through product identifiers
+     * @return array
+     */
+    public function getProductsIdSkuPair(): array
+    {
+        $connection = $this->resource->getConnection();
+        $select = $this->resource->getConnection()->select()->from(
+            $this->resource->getTableName('catalog_product_entity'),
+            ['entity_id', 'sku']
+        );
+        return $connection->fetchPairs($select, ['entity_id', 'sku']);
+    }
+
     public function disableProduct(string $sku)
     {
         try {

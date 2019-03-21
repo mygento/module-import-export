@@ -294,6 +294,15 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $this->productAdapter->getProductsSku();
     }
 
+    /**
+     * Get all products entity_id sku pair
+     * @return array
+     */
+    public function getImportedProductsIdSku(): array
+    {
+        return $this->productAdapter->getProductsIdSkuPair();
+    }
+
     public function massDisableProducts()
     {
         return $this->productAdapter->massDisableProducts();
