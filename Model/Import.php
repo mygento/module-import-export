@@ -62,6 +62,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     /** @var int */
     private $maxRetry = 5;
 
+    /** @var bool */
+    private $manualReindex = false;
+
     /**
      *
      * @param \Mygento\ImportExport\Model\Category\Import $categoryAdapter
@@ -214,6 +217,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
      */
     protected function handleImportResult($importModel)
     {
+        if ($this->manualReindex) {
+            return;
+        }
         if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
             $importModel->invalidateIndex();
         }
@@ -320,6 +326,17 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
+     *
+     * @param bool $flag
+     * @return $this
+     */
+    public function setManualReindex(bool $flag)
+    {
+        $this->manualReindex = $flag;
+        return $this;
+    }
+
+    /**
      * Update attribute values for entity list per store
      *
      * @param array $productIds
@@ -329,5 +346,15 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     public function updateProductAttributes(array $productIds, array $attrData, int $storeId)
     {
         return $this->productAdapter->updateProductAttributes($productIds, $attrData, $storeId);
+    }
+
+    /**
+     * Invalidate Product Index
+     */
+    public function invalidateProductIndex()
+    {
+        $this->importSettings = $this->defaultProductSettings;
+        $importModel = $this->createImportModel();
+        $importModel->invalidateIndex();
     }
 }

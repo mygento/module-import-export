@@ -80,6 +80,18 @@ interface ImportInterface
     public function setMaxRetry(int $max);
 
     /**
+     *
+     * @param bool $flag
+     * @return $this
+     */
+    public function setManualReindex(bool $flag);
+
+    /**
+     * Invalidate Product Index
+     */
+    public function invalidateProductIndex();
+
+    /**
      * Update attribute values for entity list per store
      *
      * @param array $productIds
