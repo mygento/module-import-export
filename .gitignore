@@ -5,3 +5,5 @@
 /composer.lock
 .DS_Store
 .php_cs.cache
+auth.json
+/generate

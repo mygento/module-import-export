@@ -1,7 +1,7 @@
 {
     "name": "mygento/module-import-export",
     "type": "magento2-module",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "license": "OSL-3.0",
     "homepage": "https://github.com/mygento/module-import-export",
     "description": "Magento 2 import export array adapter",
@@ -23,11 +23,12 @@
         "mygento"
     ],
     "require": {
-        "magento/module-catalog-import-export": "100.2.*",
-        "magento/module-configurable-import-export": "100.2.*"
+        "magento/module-catalog-import-export": "101.0.*",
+        "magento/module-configurable-import-export": "100.3.*"
     },
     "require-dev": {
-        "mygento/coding-standard": "2.*"  
+      "mygento/coding-standard": "^2.13.5",
+      "magento/magento-coding-standard": "~4.0.0"
     },
     "autoload": {
         "files": [
