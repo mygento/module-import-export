@@ -48,16 +48,16 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
     /**
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $collection
-     * @param \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator\Proxy $catUrlGenerator
-     * @param \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy $urlPersist
-     * @param \Magento\Store\Model\App\Emulation\Proxy $emulation
+     * @param \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator $catUrlGenerator
+     * @param \Magento\UrlRewrite\Model\UrlPersistInterface $urlPersist
+     * @param \Magento\Store\Model\App\Emulation $emulation
      */
     public function __construct(
         \Magento\Framework\App\State $state,
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $collection,
-        \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator\Proxy $catUrlGenerator,
-        \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy $urlPersist,
-        \Magento\Store\Model\App\Emulation\Proxy $emulation
+        \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator $catUrlGenerator,
+        \Magento\UrlRewrite\Model\UrlPersistInterface $urlPersist,
+        \Magento\Store\Model\App\Emulation $emulation
     ) {
         parent::__construct();
         $this->state = $state;

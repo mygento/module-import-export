@@ -10,4 +10,20 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Mygento\ImportExport\Command\RegenerateCategoryUrl">
+        <arguments>
+            <argument name="catUrlGenerator" xsi:type="object">Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator\Proxy</argument>
+            <argument name="urlPersist" xsi:type="object">Magento\UrlRewrite\Model\UrlPersistInterface\Proxy</argument>
+            <argument name="emulation" xsi:type="object">Magento\Store\Model\App\Emulation\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Mygento\ImportExport\Command\RegenerateProductUrl">
+        <arguments>
+            <argument name="productUrlGenerator" xsi:type="object">Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy</argument>
+            <argument name="urlPersist" xsi:type="object">Magento\UrlRewrite\Model\UrlPersistInterface\Proxy</argument>
+            <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>
+        </arguments>
+    </type>
 </config>

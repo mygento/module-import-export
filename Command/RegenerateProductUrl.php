@@ -47,16 +47,16 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
     /**
      * @param \Magento\Framework\App\State $state
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collection
-     * @param \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy $productUrlGenerator
-     * @param \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy $urlPersist
-     * @param \Magento\Store\Model\StoreManagerInterface\Proxy $storeManager
+     * @param \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator $productUrlGenerator
+     * @param \Magento\UrlRewrite\Model\UrlPersistInterface $urlPersist
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Framework\App\State $state,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collection,
-        \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy $productUrlGenerator,
-        \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy $urlPersist,
-        \Magento\Store\Model\StoreManagerInterface\Proxy $storeManager
+        \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator $productUrlGenerator,
+        \Magento\UrlRewrite\Model\UrlPersistInterface $urlPersist,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         parent::__construct();
         $this->state = $state;
