@@ -50,14 +50,14 @@ interface AttributeInterface
     /**
      * Create Attribute option
      *
-     * @param string $attributeCode
+     * @param string $code
      * @param string $label
      */
     public function createAttributeOption(string $code, $label);
 
     /**
      * Reload Cached Attribute Option List
-     * @param string $attributeCode
+     * @param string $code
      * @return array
      */
     public function reloadAttributeOptionList(string $code);

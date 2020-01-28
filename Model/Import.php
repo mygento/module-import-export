@@ -220,7 +220,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     * array of [id] => name
+     * Array of [id] => name
      * @param array $data
      */
     public function renameCategoryData(array $data)

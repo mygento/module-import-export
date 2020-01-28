@@ -10,7 +10,7 @@ namespace Mygento\ImportExport\Model\Category;
 
 class Import implements \Mygento\ImportExport\Api\CategoryInterface
 {
-    /** \Mygento\ImportExport\Model\Category\Processor */
+    /** @var \Mygento\ImportExport\Model\Category\Processor */
     private $categoryProcessor;
 
     public function __construct(

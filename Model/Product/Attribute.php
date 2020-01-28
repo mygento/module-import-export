@@ -10,7 +10,7 @@ namespace Mygento\ImportExport\Model\Product;
 
 class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
 {
-    /** var array */
+    /** @var array */
     private $options = [];
 
     /**
@@ -110,7 +110,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     }
 
     /**
-     * @param string $attributeCode
+     * @param string $code
      * @param string $label
      */
     public function createAttributeOption(string $code, $label)

@@ -50,7 +50,6 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
      * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $collection
      * @param \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator\Proxy $catUrlGenerator
      * @param \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy $urlPersist
-     * @param \Magento\Store\Model\StoreManagerInterface\Proxy $storeManager
      * @param \Magento\Store\Model\App\Emulation\Proxy $emulation
      */
     public function __construct(
@@ -68,6 +67,11 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $this->emulation = $emulation;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $error = '<error>Problem for store ID %d, category %s' . PHP_EOL . '%s</error>' . PHP_EOL;
@@ -125,17 +129,20 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $output->writeln('');
     }
 
+    /**
+     * Console config
+     */
     protected function configure()
     {
         $this->setName('importexport:category:url')
             ->setDescription('Regenerate url for categories')
             ->addOption(
-              'store',
-              's',
-              InputOption::VALUE_REQUIRED,
-              'Regenerate for one specific store view',
-              \Magento\Store\Model\Store::DEFAULT_STORE_ID
-          );
+                'store',
+                's',
+                InputOption::VALUE_REQUIRED,
+                'Regenerate for one specific store view',
+                \Magento\Store\Model\Store::DEFAULT_STORE_ID
+            );
     }
 
     /**
