@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -10,7 +10,6 @@ namespace Mygento\ImportExport\Model\Product;
 
 class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
 {
-
     /** var array */
     private $options = [];
 
@@ -25,7 +24,6 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     private $optionFactory;
 
     /**
-     *
      * @var \Magento\Catalog\Model\Product\Attribute\OptionManagement
      */
     private $repository;
@@ -107,11 +105,11 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
             }
             $this->options[$code] = $result;
         }
+
         return $this->options[$code];
     }
 
     /**
-     *
      * @param string $attributeCode
      * @param string $label
      */
@@ -139,6 +137,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     public function reloadAttributeOptionList(string $code)
     {
         unset($this->options[$code]);
+
         return $this->getAttributeOptions($code);
     }
 }

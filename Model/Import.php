@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -66,7 +66,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     private $manualReindex = false;
 
     /**
-     *
      * @param \Mygento\ImportExport\Model\Category\Import $categoryAdapter
      * @param \Mygento\ImportExport\Model\Product\Attribute $attributeAdapter
      * @param \Mygento\ImportExport\Model\Product\Product $productAdapter
@@ -88,7 +87,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     *
      * @param array $data
      * @param mixed $settings
      * @return string
@@ -116,6 +114,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
                 }
             }
         }
+
         return $this->logTrace;
     }
 
@@ -134,6 +133,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         if ($this->validateData($data)) {
             $this->importData();
         }
+
         return $this->logTrace;
     }
 
@@ -152,11 +152,11 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         if ($this->validateData($data)) {
             $this->importData();
         }
+
         return $this->logTrace;
     }
 
     /**
-     *
      * @param array $data
      */
     public function disableProductData(array $data)
@@ -182,67 +182,11 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     {
         $importModel = $this->importModelFactory->create();
         $importModel->setData($this->importSettings);
+
         return $importModel;
     }
 
     /**
-     * @param array $data
-     * @return bool
-     */
-    private function validateData(array $data): bool
-    {
-        if (empty($data)) {
-            $this->logTrace = __('Empty import data');
-            return false;
-        }
-
-        $importModel = $this->createImportModel();
-        $source = $this->adapterFactory->create(['data' => $data]);
-        $validationResult = $importModel->validateSource($source);
-        $this->addToLogTrace($importModel);
-        return $validationResult;
-    }
-
-    /**
-     *
-     * @param \Magento\ImportExport\Model\Import\AbstractSource $source
-     */
-    private function createAttrOptions(\Magento\ImportExport\Model\Import\AbstractSource $source)
-    {
-        $this->attributeAdapter->createAttributeOptions($source, $this->optionAttributes);
-    }
-
-    /**
-     * @param \Magento\ImportExport\Model\Import $importModel
-     */
-    protected function handleImportResult($importModel)
-    {
-        if ($this->manualReindex) {
-            return;
-        }
-        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
-            $importModel->invalidateIndex();
-        }
-    }
-
-    private function importData()
-    {
-        $importModel = $this->createImportModel();
-        $importModel->importSource();
-        $this->addToLogTrace($importModel);
-        $this->handleImportResult($importModel);
-    }
-
-    /**
-     * @param \Magento\ImportExport\Model\Import $importModel
-     */
-    private function addToLogTrace($importModel)
-    {
-        $this->logTrace = $importModel->getFormatedLogTrace();
-    }
-
-    /**
-     *
      * @param array $data
      */
     public function importCategoryData(array $data): array
@@ -251,11 +195,11 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         foreach ($data as $cat) {
             $result[] = $this->categoryAdapter->createCategory($cat);
         }
+
         return $result;
     }
 
     /**
-     *
      * @param array $data
      */
     public function deleteCategoryData(array $data)
@@ -266,7 +210,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     *
      * @param array $data
      */
     public function disableCategoryData(array $data)
@@ -292,7 +235,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     *
      * @return array
      */
     public function getImportedProductsSku(): array
@@ -315,24 +257,24 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     *
      * @param int $max
      * @return $this
      */
     public function setMaxRetry(int $max)
     {
         $this->maxRetry = $max;
+
         return $this;
     }
 
     /**
-     *
      * @param bool $flag
      * @return $this
      */
     public function setManualReindex(bool $flag)
     {
         $this->manualReindex = $flag;
+
         return $this;
     }
 
@@ -356,5 +298,62 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $this->importSettings = $this->defaultProductSettings;
         $importModel = $this->createImportModel();
         $importModel->invalidateIndex();
+    }
+
+    /**
+     * @param \Magento\ImportExport\Model\Import $importModel
+     */
+    protected function handleImportResult($importModel)
+    {
+        if ($this->manualReindex) {
+            return;
+        }
+        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
+            $importModel->invalidateIndex();
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    private function validateData(array $data): bool
+    {
+        if (empty($data)) {
+            $this->logTrace = __('Empty import data');
+
+            return false;
+        }
+
+        $importModel = $this->createImportModel();
+        $source = $this->adapterFactory->create(['data' => $data]);
+        $validationResult = $importModel->validateSource($source);
+        $this->addToLogTrace($importModel);
+
+        return $validationResult;
+    }
+
+    /**
+     * @param \Magento\ImportExport\Model\Import\AbstractSource $source
+     */
+    private function createAttrOptions(\Magento\ImportExport\Model\Import\AbstractSource $source)
+    {
+        $this->attributeAdapter->createAttributeOptions($source, $this->optionAttributes);
+    }
+
+    private function importData()
+    {
+        $importModel = $this->createImportModel();
+        $importModel->importSource();
+        $this->addToLogTrace($importModel);
+        $this->handleImportResult($importModel);
+    }
+
+    /**
+     * @param \Magento\ImportExport\Model\Import $importModel
+     */
+    private function addToLogTrace($importModel)
+    {
+        $this->logTrace = $importModel->getFormatedLogTrace();
     }
 }

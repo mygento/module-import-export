@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -20,7 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
 {
-
     /**
      * @var \Magento\Framework\App\State
      */
@@ -69,22 +68,10 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $this->emulation = $emulation;
     }
 
-    protected function configure()
-    {
-        $this->setName('importexport:category:url')
-          ->setDescription('Regenerate url for categories')
-          ->addOption(
-              'store',
-              's',
-              InputOption::VALUE_REQUIRED,
-              'Regenerate for one specific store view',
-              \Magento\Store\Model\Store::DEFAULT_STORE_ID
-          );
-    }
-
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $error = '<error>Problem for store ID %d, category %s' . PHP_EOL . '%s</error>' . PHP_EOL;
+
         try {
             $this->state->getAreaCode();
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
@@ -138,6 +125,19 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $output->writeln('');
     }
 
+    protected function configure()
+    {
+        $this->setName('importexport:category:url')
+            ->setDescription('Regenerate url for categories')
+            ->addOption(
+              'store',
+              's',
+              InputOption::VALUE_REQUIRED,
+              'Regenerate for one specific store view',
+              \Magento\Store\Model\Store::DEFAULT_STORE_ID
+          );
+    }
+
     /**
      * Remove entries with request_path=''
      *
@@ -153,6 +153,7 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
                 $result[$key] = $url;
             }
         }
+
         return $result;
     }
 }

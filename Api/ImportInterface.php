@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -10,7 +10,6 @@ namespace Mygento\ImportExport\Api;
 
 interface ImportInterface
 {
-
     /**
      * Import product data
      * @param array $data
@@ -25,7 +24,6 @@ interface ImportInterface
     public function setProductOptionAttributes(array $list);
 
     /**
-     *
      * @param array $data
      * @return array
      */
@@ -44,25 +42,21 @@ interface ImportInterface
     public function getImportedProductsIdSku(): array;
 
     /**
-     *
      * @param array $data
      */
     public function deleteCategoryData(array $data);
 
     /**
-     *
      * @param array $data
      */
     public function renameCategoryData(array $data);
 
     /**
-     *
      * @param array $data
      */
     public function disableCategoryData(array $data);
 
     /**
-     *
      * @param array $data
      */
     public function disableProductData(array $data);
@@ -73,14 +67,12 @@ interface ImportInterface
     public function massDisableProducts();
 
     /**
-     *
      * @param int $max
      * @return $this
      */
     public function setMaxRetry(int $max);
 
     /**
-     *
      * @param bool $flag
      * @return $this
      */

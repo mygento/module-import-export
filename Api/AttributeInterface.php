@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -10,9 +10,7 @@ namespace Mygento\ImportExport\Api;
 
 interface AttributeInterface
 {
-
     /**
-     *
      * @param \Magento\ImportExport\Model\Import\AbstractSource $source
      * @param array $attibutes
      */
@@ -22,7 +20,6 @@ interface AttributeInterface
     );
 
     /**
-     *
      * @param \Magento\ImportExport\Model\Import\AbstractSource $source
      * @param array $attibutes
      */
@@ -32,7 +29,6 @@ interface AttributeInterface
     );
 
     /**
-     *
      * @param \Magento\ImportExport\Model\Import\AbstractSource $source
      * @param array $attibutes
      */

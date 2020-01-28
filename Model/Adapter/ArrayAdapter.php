@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -10,7 +10,6 @@ namespace Mygento\ImportExport\Model\Adapter;
 
 class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
 {
-
     /**
      * @var int
      */
@@ -20,6 +19,18 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
      * @var array The Data; Array of Array
      */
     private $array = [];
+
+    /**
+     * ArrayAdapter constructor.
+     * @param array $data
+     */
+    public function __construct($data)
+    {
+        $this->array = $data;
+        $this->position = 0;
+        $colnames = array_keys($this->current());
+        parent::__construct($colnames);
+    }
 
     /**
      * Go to given position and check if it is valid
@@ -33,20 +44,8 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
         $this->position = $position;
 
         if (!$this->valid()) {
-            throw new \OutOfBoundsException("invalid seek position ($position)");
+            throw new \OutOfBoundsException("invalid seek position (${position})");
         }
-    }
-
-    /**
-     * ArrayAdapter constructor.
-     * @param array $data
-     */
-    public function __construct($data)
-    {
-        $this->array = $data;
-        $this->position = 0;
-        $colnames = array_keys($this->current());
-        parent::__construct($colnames);
     }
 
     /**
@@ -69,6 +68,7 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
         if (empty($this->array)) {
             return [];
         }
+
         return $this->array[$this->position];
     }
 
@@ -117,6 +117,7 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
                 }
             }
         }
+
         return $colNames;
     }
 
@@ -141,6 +142,7 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
     protected function _getNextRow()
     {
         $this->next();
+
         return $this->current();
     }
 }

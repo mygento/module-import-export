@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -58,6 +58,7 @@ class Product
             $this->resource->getTableName('catalog_product_entity'),
             ['sku']
         );
+
         return $connection->fetchCol($select);
     }
 
@@ -72,6 +73,7 @@ class Product
             $this->resource->getTableName('catalog_product_entity'),
             ['entity_id', 'sku']
         );
+
         return $connection->fetchPairs($select, ['entity_id', 'sku']);
     }
 

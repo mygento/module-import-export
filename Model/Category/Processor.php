@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -23,7 +23,6 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
     }
 
     /**
-     *
      * @param string $categoryPath
      */
     public function deleteCategoryByPath(string $categoryPath)
@@ -39,7 +38,6 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
     }
 
     /**
-     *
      * @param string $categoryPath
      */
     public function disableCategoryByPath(string $categoryPath)
@@ -57,7 +55,6 @@ class Processor extends \Magento\CatalogImportExport\Model\Import\Product\Catego
     }
 
     /**
-     *
      * @param int $categoryId
      * @param string $name
      */

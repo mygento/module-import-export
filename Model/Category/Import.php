@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -20,7 +20,6 @@ class Import implements \Mygento\ImportExport\Api\CategoryInterface
     }
 
     /**
-     *
      * @param string $path
      * @return integer|null;
      */
@@ -30,11 +29,11 @@ class Import implements \Mygento\ImportExport\Api\CategoryInterface
         if (is_array($result) && isset($result[0])) {
             return $result[0];
         }
+
         return null;
     }
 
     /**
-     *
      * @param string $path
      */
     public function deleteCategory(string $path)
@@ -43,7 +42,6 @@ class Import implements \Mygento\ImportExport\Api\CategoryInterface
     }
 
     /**
-     *
      * @param string $path
      */
     public function disableCategory(string $path)
@@ -52,7 +50,6 @@ class Import implements \Mygento\ImportExport\Api\CategoryInterface
     }
 
     /**
-     *
      * @param int $id
      * @param string $name
      */

@@ -2,7 +2,7 @@
 
 /**
  * @author Mygento Team
- * @copyright 2018 Mygento (https://www.mygento.ru)
+ * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
 
@@ -66,22 +66,10 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
         $this->storeManager = $storeManager;
     }
 
-    protected function configure()
-    {
-        $this->setName('importexport:product:url')
-            ->setDescription('Regenerate url for products')
-            ->addOption(
-                'store',
-                's',
-                InputOption::VALUE_REQUIRED,
-                'Regenerate for one specific store view',
-                \Magento\Store\Model\Store::DEFAULT_STORE_ID
-            );
-    }
-
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $error = '<error>Problem for store ID %d, product %s' . PHP_EOL . '%s</error>' . PHP_EOL;
+
         try {
             $this->state->getAreaCode();
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
@@ -126,6 +114,7 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
                 ]);
 
                 $newUrls = $this->productUrlGenerator->generate($product);
+
                 try {
                     $this->urlPersist->replace($newUrls);
                 } catch (\Exception $e) {
@@ -146,5 +135,18 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
             $progressBar->finish();
             $output->writeln('');
         }
+    }
+
+    protected function configure()
+    {
+        $this->setName('importexport:product:url')
+            ->setDescription('Regenerate url for products')
+            ->addOption(
+                'store',
+                's',
+                InputOption::VALUE_REQUIRED,
+                'Regenerate for one specific store view',
+                \Magento\Store\Model\Store::DEFAULT_STORE_ID
+            );
     }
 }
