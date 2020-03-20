@@ -100,18 +100,21 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
 
         $source = $this->adapterFactory->create(['data' => $data]);
         $this->createAttrOptions($source);
-        if ($this->validateData($data)) {
-            for ($i = 0; $i < $this->maxRetry; $i++) {
-                try {
-                    $this->importData();
-                    break;
-                } catch (\Magento\Framework\DB\Adapter\DeadlockException $e) {
-                    unset($e);
-                    continue;
-                } catch (\Magento\Framework\DB\Adapter\LockWaitException $e) {
-                    unset($e);
-                    continue;
-                }
+
+        if (!$this->validateData($data)) {
+            throw new \Magento\Framework\Exception\ValidatorException(__($this->logTrace));
+        }
+
+        for ($i = 0; $i < $this->maxRetry; $i++) {
+            try {
+                $this->importData();
+                break;
+            } catch (\Magento\Framework\DB\Adapter\DeadlockException $e) {
+                unset($e);
+                continue;
+            } catch (\Magento\Framework\DB\Adapter\LockWaitException $e) {
+                unset($e);
+                continue;
             }
         }
 
@@ -251,6 +254,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $this->productAdapter->getProductsIdSkuPair();
     }
 
+    /**
+     * Mass Disable Products
+     */
     public function massDisableProducts()
     {
         return $this->productAdapter->massDisableProducts();
@@ -341,6 +347,9 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $this->attributeAdapter->createAttributeOptions($source, $this->optionAttributes);
     }
 
+    /**
+     * Import Data
+     */
     private function importData()
     {
         $importModel = $this->createImportModel();

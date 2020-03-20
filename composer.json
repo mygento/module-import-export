@@ -27,7 +27,7 @@
         "magento/module-configurable-import-export": "100.3.*"
     },
     "require-dev": {
-      "mygento/coding-standard": "^2.13.5",
+      "mygento/coding-standard": "~2.13.5",
       "magento/magento-coding-standard": "~4.0.0"
     },
     "autoload": {
