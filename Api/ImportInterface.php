@@ -8,15 +8,8 @@
 
 namespace Mygento\ImportExport\Api;
 
-interface ImportInterface
+interface ImportInterface extends ProductInterface
 {
-    /**
-     * Import product data
-     * @param array $data
-     * @return string
-     */
-    public function importProductData(array $data): string;
-
     /**
      * Set Option based attribute list
      * @param string[] $list
@@ -28,18 +21,6 @@ interface ImportInterface
      * @return array
      */
     public function importCategoryData(array $data): array;
-
-    /**
-     * Get all products SKU
-     * @return array
-     */
-    public function getImportedProductsSku(): array;
-
-    /**
-     * Get all products entity_id sku pair
-     * @return array
-     */
-    public function getImportedProductsIdSku(): array;
 
     /**
      * @param array $data
@@ -62,11 +43,6 @@ interface ImportInterface
     public function disableProductData(array $data);
 
     /**
-     * Mass Disable Products
-     */
-    public function massDisableProducts();
-
-    /**
      * @param int $max
      * @return $this
      */
@@ -77,11 +53,6 @@ interface ImportInterface
      * @return $this
      */
     public function setManualReindex(bool $flag);
-
-    /**
-     * Invalidate Product Index
-     */
-    public function invalidateProductIndex();
 
     /**
      * Update attribute values for entity list per store

@@ -1,7 +1,7 @@
 {
     "name": "mygento/module-import-export",
     "type": "magento2-module",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "license": "OSL-3.0",
     "homepage": "https://github.com/mygento/module-import-export",
     "description": "Magento 2 import export array adapter",

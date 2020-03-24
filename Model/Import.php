@@ -307,6 +307,16 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
+     * @param string[] $skus
+     * @param string $type
+     */
+    public function changeProductType(array $skus, string $type)
+    {
+        $this->productAdapter->changeProductType($skus, $type);
+        $this->invalidateProductIndex();
+    }
+
+    /**
      * @param \Magento\ImportExport\Model\Import $importModel
      */
     protected function handleImportResult($importModel)

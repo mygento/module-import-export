@@ -8,6 +8,7 @@
 
 namespace Mygento\ImportExport\Model\Product;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 class Product
@@ -31,6 +32,14 @@ class Product
      */
     private $productPriceIndexerProcessor;
 
+    /**
+     * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepo
+     * @param \Magento\Catalog\Model\Indexer\Product\Flat\Processor $productFlatIndexerProcessor
+     * @param \Magento\Catalog\Model\Indexer\Product\Price\Processor $productPriceIndexerProcessor
+     * @param \Magento\Eav\Model\Config $eavConfig
+     * @param \Magento\Framework\App\ResourceConnection $resource
+     * @param \Magento\Catalog\Model\Product\ActionFactory $actionFactory
+     */
     public function __construct(
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepo,
         \Magento\Catalog\Model\Indexer\Product\Flat\Processor $productFlatIndexerProcessor,
@@ -77,6 +86,9 @@ class Product
         return $connection->fetchPairs($select, ['entity_id', 'sku']);
     }
 
+    /**
+     * @param string $sku
+     */
     public function disableProduct(string $sku)
     {
         try {
@@ -88,6 +100,9 @@ class Product
         }
     }
 
+    /**
+     * Mass disable products
+     */
     public function massDisableProducts()
     {
         $attribute = $this->eavConfig->getAttribute(
@@ -129,5 +144,26 @@ class Product
         ) {
             $this->productPriceIndexerProcessor->reindexList($productIds);
         }
+    }
+
+    /**
+     * Change product type
+     * @param string[] $skus
+     * @param string $type
+     */
+    public function changeProductType(array $skus, string $type)
+    {
+        if (!$type || empty($skus)) {
+            return;
+        }
+        $connection = $this->resource->getConnection();
+
+        $bind = [ProductInterface::TYPE_ID => $type];
+        $where = $connection->quoteInto('sku IN(?)', $skus);
+        $connection->update(
+            $this->resource->getTableName('catalog_product_entity'),
+            $bind,
+            $where
+        );
     }
 }
