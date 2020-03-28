@@ -28,6 +28,11 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
      */
     private $repository;
 
+    /**
+     * @param \Magento\Catalog\Model\Product\Attribute\OptionManagement $repository
+     * @param \Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory $optionLabelFactory
+     * @param \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory
+     */
     public function __construct(
         \Magento\Catalog\Model\Product\Attribute\OptionManagement $repository,
         \Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory $optionLabelFactory,
@@ -38,6 +43,10 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         $this->optionFactory = $optionFactory;
     }
 
+    /**
+     * @param \Magento\ImportExport\Model\Import\AbstractSource $source
+     * @param array $attibutes
+     */
     public function createAttributeOptions(
         \Magento\ImportExport\Model\Import\AbstractSource $source,
         array $attibutes
@@ -46,6 +55,10 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         $this->createMultiselectAttributeOptions($source, $attibutes);
     }
 
+    /**
+     * @param \Magento\ImportExport\Model\Import\AbstractSource $source
+     * @param array $attibutes
+     */
     public function createDropdownAttributeOptions(
         \Magento\ImportExport\Model\Import\AbstractSource $source,
         array $attibutes
@@ -120,7 +133,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         $optionLabel->setLabel($label);
 
         $option = $this->optionFactory->create();
-        $option->setLabel($optionLabel);
+        $option->setLabel($label);
         $option->setStoreLabels([$optionLabel]);
         $option->setSortOrder(0);
         $option->setIsDefault(false);
