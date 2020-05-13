@@ -7,6 +7,7 @@
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="mygento_importexport_product" xsi:type="object">Mygento\ImportExport\Command\RegenerateProductUrl</item>
+                <item name="mygento_importexport_category" xsi:type="object">Mygento\ImportExport\Command\RegenerateCategoryUrl</item>
             </argument>
         </arguments>
     </type>
