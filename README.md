@@ -1,6 +1,6 @@
 Magento 2 Import Export Array Adapter
 
-[![Build Status](https://travis-ci.com/mygento/module-import-export.svg?branch=v2.3)](https://travis-ci.com/mygento/module-import-export)
+[![Build Status](https://travis-ci.com/mygento/module-import-export.svg?branch=v2.4)](https://travis-ci.com/mygento/module-import-export)
 [![Latest Stable Version](https://poser.pugx.org/mygento/module-import-export/v/stable)](https://packagist.org/packages/mygento/module-import-export)
 [![Total Downloads](https://poser.pugx.org/mygento/module-import-export/downloads)](https://packagist.org/packages/mygento/module-import-export)
 
@@ -10,4 +10,4 @@ Magento 2 Import Export Array Adapter
 ## Configuration
 
 ## Compability
-The module is tested on magento version 2.3.x
+The module is tested on magento version 2.4.x
