@@ -29,6 +29,11 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     private $repository;
 
     /**
+     * @var \Magento\Catalog\Api\ProductAttributeRepositoryInterface
+     */
+    private $productAttributeRepository;
+
+    /**
      * @param \Magento\Catalog\Model\Product\Attribute\OptionManagement $repository
      * @param \Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory $optionLabelFactory
      * @param \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory
@@ -36,11 +41,13 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     public function __construct(
         \Magento\Catalog\Model\Product\Attribute\OptionManagement $repository,
         \Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory
+        \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory,
+        \Magento\Catalog\Api\ProductAttributeRepositoryInterface $productAttributeRepository
     ) {
         $this->repository = $repository;
         $this->optionLabelFactory = $optionLabelFactory;
         $this->optionFactory = $optionFactory;
+        $this->productAttributeRepository = $productAttributeRepository;
     }
 
     /**
@@ -84,7 +91,6 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     }
 
     /**
-     * TODO
      * @param \Magento\ImportExport\Model\Import\AbstractSource $source
      * @param array $attibutes
      */
@@ -92,6 +98,34 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         \Magento\ImportExport\Model\Import\AbstractSource $source,
         array $attibutes
     ) {
+        $source->rewind();
+
+        while ($source->valid()) {
+            $row = $source->current();
+
+            foreach ($attibutes as $attributeCode) {
+                $attribute = $this->productAttributeRepository->get($attributeCode);
+
+                if ($attribute->getFrontendInput() == 'multiselect') {
+                    $options = $this->getAttributeOptions($attributeCode);
+                    $newOptions = explode(\Magento\ImportExport\Model\Import::DEFAULT_GLOBAL_MULTI_VALUE_SEPARATOR, $row[$attributeCode]);
+
+                    foreach ($newOptions as $newOption) {
+                        if (!isset($newOption) || !strlen(trim($newOption))) {
+                            continue;
+                        }
+                        if (in_array($newOption, $options)) {
+                            continue;
+                        }
+                        $this->createAttributeOption($attributeCode, $row[$attributeCode]);
+                    }
+
+                }
+            }
+
+            $source->next();
+        }
+
         unset($source);
         unset($attibutes);
     }
