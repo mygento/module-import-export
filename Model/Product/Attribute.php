@@ -20,12 +20,12 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     /**
      * @var AttributeRepository
      */
-    protected $attributeRepository;
+    private $attributeRepository;
 
     /**
      * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute
      */
-    protected $resourceModel;
+    private $resourceModel;
 
     /** @var array */
     private $options = [];
