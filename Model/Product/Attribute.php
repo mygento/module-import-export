@@ -5,11 +5,28 @@
  * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
-
 namespace Mygento\ImportExport\Model\Product;
+
+use Magento\Catalog\Api\Data\ProductAttributeInterface;
+use Magento\Eav\Api\Data\AttributeInterface as EavAttributeInterface;
+use Magento\Eav\Api\Data\AttributeOptionInterface;
+use Magento\Eav\Model\AttributeRepository;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
 
 class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
 {
+    /**
+     * @var AttributeRepository
+     */
+    protected $attributeRepository;
+
+    /**
+     * @var \Magento\Eav\Model\ResourceModel\Entity\Attribute
+     */
+    protected $resourceModel;
+
     /** @var array */
     private $options = [];
 
@@ -36,11 +53,15 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
     public function __construct(
         \Magento\Catalog\Model\Product\Attribute\OptionManagement $repository,
         \Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory
+        \Magento\Eav\Api\Data\AttributeOptionInterfaceFactory $optionFactory,
+        AttributeRepository $attributeRepository,
+        \Magento\Eav\Model\ResourceModel\Entity\Attribute $resourceModel
     ) {
         $this->repository = $repository;
         $this->optionLabelFactory = $optionLabelFactory;
         $this->optionFactory = $optionFactory;
+        $this->attributeRepository = $attributeRepository;
+        $this->resourceModel = $resourceModel;
     }
 
     /**
@@ -76,7 +97,7 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
                 if (in_array($row[$attributeCode], $options)) {
                     continue;
                 }
-                $this->createAttributeOption($attributeCode, $row[$attributeCode]);
+                $this->createAttributeOption($attributeCode, trim($row[$attributeCode]));
             }
 
             $source->next();
@@ -128,6 +149,11 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
      */
     public function createAttributeOption(string $code, $label)
     {
+        $attribute = $this->loadAttribute(
+            ProductAttributeInterface::ENTITY_TYPE_CODE,
+            $code
+        );
+
         $optionLabel = $this->optionLabelFactory->create();
         $optionLabel->setStoreId(0);
         $optionLabel->setLabel($label);
@@ -138,7 +164,9 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         $option->setSortOrder(0);
         $option->setIsDefault(false);
 
-        $this->repository->add($code, $option);
+        $optionId = $this->getNewOptionId($option);
+        $this->saveOption($attribute, $option, $optionId);
+
         $this->options[$code][] = $label;
     }
 
@@ -152,5 +180,85 @@ class Attribute implements \Mygento\ImportExport\Api\AttributeInterface
         unset($this->options[$code]);
 
         return $this->getAttributeOptions($code);
+    }
+
+    /**
+     * Save attribute option
+     *
+     * @param EavAttributeInterface $attribute
+     * @param AttributeOptionInterface $option
+     * @param int|string $optionId
+     * @throws StateException
+     * @return AttributeOptionInterface
+     */
+    private function saveOption(
+        EavAttributeInterface $attribute,
+        AttributeOptionInterface $option,
+        $optionId
+    ): AttributeOptionInterface {
+        $optionLabel = trim($option->getLabel());
+        $options = [];
+        $options['value'][$optionId][0] = $optionLabel;
+        $options['order'][$optionId] = $option->getSortOrder();
+        if (is_array($option->getStoreLabels())) {
+            foreach ($option->getStoreLabels() as $label) {
+                $options['value'][$optionId][$label->getStoreId()] = $label->getLabel();
+            }
+        }
+        if ($option->getIsDefault()) {
+            $attribute->setDefault([$optionId]);
+        }
+
+        $attribute->setOption($options);
+
+        try {
+            $this->resourceModel->save($attribute);
+        } catch (\Exception $e) {
+            throw new StateException(__('The "%1" attribute can\'t be saved.', $attribute->getAttributeCode()));
+        }
+
+        return $option;
+    }
+
+    /**
+     * Get option id to create new option
+     *
+     * @param AttributeOptionInterface $option
+     * @return string
+     */
+    private function getNewOptionId(AttributeOptionInterface $option): string
+    {
+        $optionId = trim($option->getValue() ?: '');
+        if (empty($optionId)) {
+            $optionId = 'new_option';
+        }
+
+        return 'id_' . $optionId;
+    }
+
+    /**
+     * Load attribute
+     *
+     * @param int|string $entityType
+     * @param string $attributeCode
+     * @throws InputException
+     * @throws NoSuchEntityException
+     * @throws StateException
+     * @return EavAttributeInterface
+     */
+    private function loadAttribute($entityType, string $attributeCode): EavAttributeInterface
+    {
+        if (empty($attributeCode)) {
+            throw new InputException(__('The attribute code is empty. Enter the code and try again.'));
+        }
+
+        $attribute = $this->attributeRepository->get($entityType, $attributeCode);
+        if (!$attribute->usesSource()) {
+            throw new StateException(__('The "%1" attribute doesn\'t work with options.', $attributeCode));
+        }
+
+        $attribute->setStoreId(0);
+
+        return $attribute;
     }
 }
