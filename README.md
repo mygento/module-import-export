@@ -9,5 +9,5 @@ Magento 2 Import Export Array Adapter
 
 ## Configuration
 
-## Compability
-The module is tested on magento version 2.3.x
+## Compatibility
+The module is tested on magento version 2.3.x and 2.4.x.

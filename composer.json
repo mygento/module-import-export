@@ -23,8 +23,8 @@
         "mygento"
     ],
     "require": {
-        "magento/module-catalog-import-export": "101.0.*",
-        "magento/module-configurable-import-export": "100.3.*"
+        "magento/module-catalog-import-export": "101.*",
+        "magento/module-configurable-import-export": "100.*"
     },
     "require-dev": {
       "mygento/coding-standard": "~2.13.5",
