@@ -284,6 +284,13 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $this;
     }
 
+    public function setImportSettings(array $importSettings): Import
+    {
+        $this->importSettings = $importSettings;
+
+        return $this;
+    }
+
     /**
      * Update attribute values for entity list per store
      *
@@ -333,7 +340,7 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
      * @param array $data
      * @return bool
      */
-    private function validateData(array $data): bool
+    public function validateData(array $data): bool
     {
         if (empty($data)) {
             $this->logTrace = __('Empty import data');
@@ -374,5 +381,10 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     private function addToLogTrace($importModel)
     {
         $this->logTrace = $importModel->getFormatedLogTrace();
+    }
+
+    public function getLogTrace(): string
+    {
+        return $this->logTrace;
     }
 }
