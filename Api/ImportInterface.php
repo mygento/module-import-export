@@ -55,6 +55,12 @@ interface ImportInterface extends ProductInterface
     public function setManualReindex(bool $flag);
 
     /**
+     * @param array $importSettings
+     * @return $this
+     */
+    public function setImportSettings(array $importSettings);
+
+    /**
      * Update attribute values for entity list per store
      *
      * @param array $productIds
@@ -62,4 +68,15 @@ interface ImportInterface extends ProductInterface
      * @param int $storeId
      */
     public function updateProductAttributes(array $productIds, array $attrData, int $storeId);
+
+    /**
+     * @return string
+     */
+    public function getLogTrace();
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function validateData(array $data);
 }

@@ -356,6 +356,11 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $validationResult;
     }
 
+    public function getLogTrace(): string
+    {
+        return $this->logTrace;
+    }
+
     /**
      * @param \Magento\ImportExport\Model\Import\AbstractSource $source
      */
@@ -381,10 +386,5 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     private function addToLogTrace($importModel)
     {
         $this->logTrace = $importModel->getFormatedLogTrace();
-    }
-
-    public function getLogTrace(): string
-    {
-        return $this->logTrace;
     }
 }
