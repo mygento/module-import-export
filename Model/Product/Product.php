@@ -22,15 +22,14 @@ class Product
     /** @var \Magento\Eav\Model\Config */
     private $eavConfig;
 
-    /**
-     * @var \Magento\Catalog\Model\Indexer\Product\Flat\Processor
-     */
+    /** @var \Magento\Catalog\Model\Indexer\Product\Flat\Processor */
     private $productFlatIndexerProcessor;
 
-    /**
-     * @var \Magento\Catalog\Model\Indexer\Product\Price\Processor
-     */
+    /** @var \Magento\Catalog\Model\Indexer\Product\Price\Processor */
     private $productPriceIndexerProcessor;
+
+    /** @var \Magento\Catalog\Model\Product\ActionFactory */
+    private $actionFactory;
 
     /**
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepo
