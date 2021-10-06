@@ -19,18 +19,17 @@ class Product
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $productRepo;
 
-    /** @var \Magento\Eav\Model\Config $eavConfig */
+    /** @var \Magento\Eav\Model\Config */
     private $eavConfig;
 
-    /**
-     * @var \Magento\Catalog\Model\Indexer\Product\Flat\Processor
-     */
+    /** @var \Magento\Catalog\Model\Indexer\Product\Flat\Processor */
     private $productFlatIndexerProcessor;
 
-    /**
-     * @var \Magento\Catalog\Model\Indexer\Product\Price\Processor
-     */
+    /** @var \Magento\Catalog\Model\Indexer\Product\Price\Processor */
     private $productPriceIndexerProcessor;
+
+    /** @var \Magento\Catalog\Model\Product\ActionFactory */
+    private $actionFactory;
 
     /**
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepo

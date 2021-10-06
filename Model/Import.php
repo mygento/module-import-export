@@ -10,7 +10,7 @@ namespace Mygento\ImportExport\Model;
 
 class Import implements \Mygento\ImportExport\Api\ImportInterface
 {
-    /** @var \Mygento\ImportExport\Model\Category\Import $categoryAdapter */
+    /** @var \Mygento\ImportExport\Model\Category\Import */
     private $categoryAdapter;
 
     /** @var \Mygento\ImportExport\Model\Product\Attribute */
@@ -284,6 +284,13 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         return $this;
     }
 
+    public function setImportSettings(array $importSettings): Import
+    {
+        $this->importSettings = $importSettings;
+
+        return $this;
+    }
+
     /**
      * Update attribute values for entity list per store
      *
@@ -317,23 +324,10 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     * @param \Magento\ImportExport\Model\Import $importModel
-     */
-    protected function handleImportResult($importModel)
-    {
-        if ($this->manualReindex) {
-            return;
-        }
-        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
-            $importModel->invalidateIndex();
-        }
-    }
-
-    /**
      * @param array $data
      * @return bool
      */
-    private function validateData(array $data): bool
+    public function validateData(array $data): bool
     {
         if (empty($data)) {
             $this->logTrace = __('Empty import data');
@@ -347,6 +341,24 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
         $this->addToLogTrace($importModel);
 
         return $validationResult;
+    }
+
+    public function getLogTrace(): string
+    {
+        return $this->logTrace;
+    }
+
+    /**
+     * @param \Magento\ImportExport\Model\Import $importModel
+     */
+    protected function handleImportResult($importModel)
+    {
+        if ($this->manualReindex) {
+            return;
+        }
+        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
+            $importModel->invalidateIndex();
+        }
     }
 
     /**
