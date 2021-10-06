@@ -10,7 +10,7 @@ namespace Mygento\ImportExport\Model;
 
 class Import implements \Mygento\ImportExport\Api\ImportInterface
 {
-    /** @var \Mygento\ImportExport\Model\Category\Import $categoryAdapter */
+    /** @var \Mygento\ImportExport\Model\Category\Import */
     private $categoryAdapter;
 
     /** @var \Mygento\ImportExport\Model\Product\Attribute */
@@ -324,19 +324,6 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     }
 
     /**
-     * @param \Magento\ImportExport\Model\Import $importModel
-     */
-    protected function handleImportResult($importModel)
-    {
-        if ($this->manualReindex) {
-            return;
-        }
-        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
-            $importModel->invalidateIndex();
-        }
-    }
-
-    /**
      * @param array $data
      * @return bool
      */
@@ -359,6 +346,19 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
     public function getLogTrace(): string
     {
         return $this->logTrace;
+    }
+
+    /**
+     * @param \Magento\ImportExport\Model\Import $importModel
+     */
+    protected function handleImportResult($importModel)
+    {
+        if ($this->manualReindex) {
+            return;
+        }
+        if (!$importModel->getErrorAggregator()->hasToBeTerminated()) {
+            $importModel->invalidateIndex();
+        }
     }
 
     /**

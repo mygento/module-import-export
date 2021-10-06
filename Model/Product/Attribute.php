@@ -5,6 +5,7 @@
  * @copyright 2018-2020 Mygento (https://www.mygento.ru)
  * @package Mygento_ImportExport
  */
+
 namespace Mygento\ImportExport\Model\Product;
 
 use Magento\Catalog\Api\Data\ProductAttributeInterface;

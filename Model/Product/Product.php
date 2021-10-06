@@ -19,7 +19,7 @@ class Product
     /** @var \Magento\Catalog\Api\ProductRepositoryInterface */
     private $productRepo;
 
-    /** @var \Magento\Eav\Model\Config $eavConfig */
+    /** @var \Magento\Eav\Model\Config */
     private $eavConfig;
 
     /**
