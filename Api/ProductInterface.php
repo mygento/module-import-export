@@ -11,11 +11,11 @@ namespace Mygento\ImportExport\Api;
 interface ProductInterface
 {
     /**
-     * Import product data
      * @param array $data
+     * @param array $settings
      * @return string
      */
-    public function importProductData(array $data): string;
+    public function importProductData(array $data, array $settings = []): string;
 
     /**
      * Get all products SKU
