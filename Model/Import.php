@@ -88,10 +88,10 @@ class Import implements \Mygento\ImportExport\Api\ImportInterface
 
     /**
      * @param array $data
-     * @param mixed $settings
+     * @param array $settings
      * @return string
      */
-    public function importProductData(array $data, $settings = []): string
+    public function importProductData(array $data, array $settings = []): string
     {
         $this->importSettings = $this->defaultProductSettings;
         if (!empty($settings)) {
