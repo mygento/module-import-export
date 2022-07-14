@@ -111,6 +111,7 @@ class Product
         if (!$attribute || !$attribute->getId()) {
             return;
         }
+
         $connection = $this->resource->getConnection();
 
         $bind = ['value' => Status::STATUS_DISABLED];
@@ -135,11 +136,12 @@ class Product
         $action = $this->actionFactory->create();
         $action->updateAttributes($productIds, $attrData, $storeId);
         $this->productFlatIndexerProcessor->reindexList($productIds);
-        if (isset($attrData['price']) ||
-          isset($attrData['special_price']) ||
-          isset($attrData['special_from_date']) ||
-          isset($attrData['special_to_date']) ||
-          isset($attrData['cost'])
+        if (
+            isset($attrData['price']) ||
+            isset($attrData['special_price']) ||
+            isset($attrData['special_from_date']) ||
+            isset($attrData['special_to_date']) ||
+            isset($attrData['cost'])
         ) {
             $this->productPriceIndexerProcessor->reindexList($productIds);
         }

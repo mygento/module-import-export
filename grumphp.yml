@@ -9,9 +9,10 @@ grumphp:
                 - "exit;"
         phplint:
         phpcsfixer:
-            config: '.php_cs'
+            config: '.php-cs-fixer.php'
         phpmd:
             ruleset: ['vendor/mygento/coding-standard/Mygento-Mage2/phpmd.xml']
+            exclude: ['Test']
         phpcs:
             warning_severity: 0
         xmllint:

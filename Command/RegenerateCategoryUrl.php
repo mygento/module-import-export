@@ -9,6 +9,7 @@
 namespace Mygento\ImportExport\Command;
 
 use Magento\Framework\App\Area;
+use Magento\Framework\Console\Cli;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,17 +32,17 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
     private $collection;
 
     /**
-     * @var \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator\Proxy
+     * @var \Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator
      */
     private $categoryUrlGenerator;
 
     /**
-     * @var \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy
+     * @var \Magento\UrlRewrite\Model\UrlPersistInterface
      */
     private $urlPersist;
 
     /**
-     * @var \Magento\Store\Model\App\Emulation\Proxy
+     * @var \Magento\Store\Model\App\Emulation
      */
     private $emulation;
 
@@ -67,12 +68,7 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $this->emulation = $emulation;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $error = '<error>Problem for store ID %d, category %s' . PHP_EOL . '%s</error>' . PHP_EOL;
 
@@ -127,6 +123,8 @@ class RegenerateCategoryUrl extends \Symfony\Component\Console\Command\Command
         $this->emulation->stopEnvironmentEmulation();
         $progressBar->finish();
         $output->writeln('');
+
+        return Cli::RETURN_SUCCESS;
     }
 
     /**

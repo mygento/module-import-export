@@ -33,12 +33,13 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
     }
 
     /**
-     * Go to given position and check if it is valid
+     * Seeks to a position (Seekable interface)
      *
-     * @param int $position
+     * @param int $position The position to seek to 0 or more
      * @throws \OutOfBoundsException
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         $this->position = $position;
@@ -49,20 +50,24 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
     }
 
     /**
-     * Rewind to starting position
+     * Rewind the \Iterator to the first element (\Iterator interface)
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
     }
 
     /**
-     * Get data at current position
+     * Return the current element
      *
-     * @return mixed
+     * Returns the row in associative array format: array(<col_name> => <value>, ...)
+     *
+     * @return array
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if (empty($this->array)) {
@@ -73,30 +78,33 @@ class ArrayAdapter extends \Magento\ImportExport\Model\Import\AbstractSource
     }
 
     /**
-     * Get current position
+     * Return the key of the current element (\Iterator interface)
      *
-     * @return int
+     * @return int -1 if out of bounds, 0 or more otherwise
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
     }
 
     /**
-     * Set pointer to next position
+     * Move forward to next element (\Iterator interface)
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
     }
 
     /**
-     * Is current position valid?
+     * Checks if current position is valid (\Iterator interface)
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return isset($this->array[$this->position]);

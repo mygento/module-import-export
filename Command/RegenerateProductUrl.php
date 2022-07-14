@@ -8,6 +8,8 @@
 
 namespace Mygento\ImportExport\Command;
 
+use Magento\Framework\Console\Cli;
+use Magento\Store\Model\Store;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,17 +32,17 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
     private $collection;
 
     /**
-     * @var \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator\Proxy
+     * @var \Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator
      */
     private $productUrlGenerator;
 
     /**
-     * @var \Magento\UrlRewrite\Model\UrlPersistInterface\Proxy
+     * @var \Magento\UrlRewrite\Model\UrlPersistInterface
      */
     private $urlPersist;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface\Proxy
+     * @var \Magento\Store\Model\StoreManagerInterface
      */
     private $storeManager;
 
@@ -66,7 +68,7 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
         $this->storeManager = $storeManager;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $error = '<error>Problem for store ID %d, product %s' . PHP_EOL . '%s</error>' . PHP_EOL;
 
@@ -81,8 +83,7 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
 
         foreach ($stores as $store) {
             // SKIP not selected stores
-            if ($storeId != \Magento\Store\Model\Store::DEFAULT_STORE_ID &&
-                $store->getId() != $storeId) {
+            if ($storeId != Store::DEFAULT_STORE_ID && $store->getId() != $storeId) {
                 continue;
             }
             $collection = $this->collection->create()
@@ -135,6 +136,8 @@ class RegenerateProductUrl extends \Symfony\Component\Console\Command\Command
             $progressBar->finish();
             $output->writeln('');
         }
+
+        return Cli::RETURN_SUCCESS;
     }
 
     protected function configure()
