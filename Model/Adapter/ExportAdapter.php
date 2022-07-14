@@ -26,14 +26,16 @@ class ExportAdapter extends \Magento\ImportExport\Model\Export\Adapter\AbstractA
     public function writeRow(array $rowData)
     {
         $this->exportData[] = $rowData;
+
+        return $this;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getContents(): array
+    public function getContents(): string
     {
-        return $this->exportData;
+        return implode(PHP_EOL, $this->exportData);
     }
 
     protected function _init()
